@@ -1,0 +1,99 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+
+const providers = [
+  {
+    name: "Stripe",
+    region: "Global",
+    subscriptions: "Excellent",
+    docs: "Excellent",
+  },
+  {
+    name: "Razorpay",
+    region: "India",
+    subscriptions: "Good",
+    docs: "Good",
+  },
+];
+---
+
+<Layout title="Providers | Vanta.io">
+  <Navbar />
+
+  <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
+    
+    <section class="mx-auto max-w-7xl">
+
+      <div class="mb-8">
+        <p class="mb-2 text-sm text-muted-foreground">
+          Provider Intelligence
+        </p>
+
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Payment Providers
+        </h1>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-border">
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full min-w-[700px] border-collapse">
+            
+            <thead class="bg-muted/50">
+              <tr>
+                <th class="px-6 py-4 text-left text-sm font-medium">
+                  Provider
+                </th>
+
+                <th class="px-6 py-4 text-left text-sm font-medium">
+                  Region
+                </th>
+
+                <th class="px-6 py-4 text-left text-sm font-medium">
+                  Subscription Support
+                </th>
+
+                <th class="px-6 py-4 text-left text-sm font-medium">
+                  Documentation
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {
+                providers.map((provider) => (
+                  <tr class="border-t border-border">
+                    
+                    <td class="px-6 py-4 font-medium">
+                      {provider.name}
+                    </td>
+
+                    <td class="px-6 py-4 text-muted-foreground">
+                      {provider.region}
+                    </td>
+
+                    <td class="px-6 py-4 text-muted-foreground">
+                      {provider.subscriptions}
+                    </td>
+
+                    <td class="px-6 py-4 text-muted-foreground">
+                      {provider.docs}
+                    </td>
+
+                  </tr>
+                ))
+              }
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+</Layout>

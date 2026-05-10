@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
+import StatCard from "@/components/dashboard/StatCard.astro";
 ---
 
 <Layout title="Dashboard | Vanta.io">
@@ -22,37 +23,22 @@ import Navbar from "@/components/layout/Navbar.astro";
 
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
-        <div class="rounded-2xl border border-border bg-card p-6">
-          <p class="mb-2 text-sm text-muted-foreground">
-            Active Projects
-          </p>
+  <StatCard
+    title="Active Projects"
+    value="0"
+  />
 
-          <h2 class="text-3xl font-semibold">
-            0
-          </h2>
-        </div>
+  <StatCard
+    title="Simulated Events"
+    value="0"
+  />
 
-        <div class="rounded-2xl border border-border bg-card p-6">
-          <p class="mb-2 text-sm text-muted-foreground">
-            Simulated Events
-          </p>
+  <StatCard
+    title="Webhook Deliveries"
+    value="0"
+  />
 
-          <h2 class="text-3xl font-semibold">
-            0
-          </h2>
-        </div>
-
-        <div class="rounded-2xl border border-border bg-card p-6">
-          <p class="mb-2 text-sm text-muted-foreground">
-            Webhook Deliveries
-          </p>
-
-          <h2 class="text-3xl font-semibold">
-            0
-          </h2>
-        </div>
-
-      </div>
+</div>
 
     </section>
 
