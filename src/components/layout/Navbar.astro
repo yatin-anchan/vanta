@@ -1,4 +1,6 @@
 ---
+import { Menu } from "lucide-astro";
+
 const navItems = [
   { label: "Providers", href: "/providers" },
   { label: "Sandbox", href: "/sandbox" },
@@ -7,6 +9,7 @@ const navItems = [
 ---
 
 <header class="fixed top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
+  
   <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
     <a
@@ -29,13 +32,24 @@ const navItems = [
       }
     </nav>
 
-    <a
-      href="https://github.com"
-      target="_blank"
-      class="rounded-md border border-border px-4 py-2 text-sm transition hover:bg-muted"
-    >
-      GitHub
-    </a>
+    <div class="flex items-center gap-3">
+
+      <a
+        href="https://github.com"
+        target="_blank"
+        class="hidden rounded-md border border-border px-4 py-2 text-sm transition hover:bg-muted sm:block"
+      >
+        GitHub
+      </a>
+
+      <button
+        class="flex h-10 w-10 items-center justify-center rounded-md border border-border md:hidden"
+      >
+        <Menu class="h-5 w-5" />
+      </button>
+
+    </div>
 
   </div>
+
 </header>
