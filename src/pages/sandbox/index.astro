@@ -1,0 +1,65 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+
+const simulations = [
+  "Successful Payment",
+  "Failed Payment",
+  "Duplicate Webhook",
+  "Refund Failure",
+  "UPI Pending",
+  "Webhook Retry Storm",
+];
+---
+
+<Layout title="Sandbox | Vanta.io">
+  <Navbar />
+
+  <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
+
+    <section class="mx-auto max-w-7xl">
+
+      <div class="mb-8">
+        <p class="mb-2 text-sm text-muted-foreground">
+          Behavioral Sandbox
+        </p>
+
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Payment Simulation Engine
+        </h1>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+
+        {
+          simulations.map((simulation) => (
+            <div class="rounded-2xl border border-border bg-card p-6 transition hover:border-muted-foreground/30">
+              
+              <div class="mb-4 flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">
+                  Simulation
+                </span>
+
+                <div class="h-2 w-2 rounded-full bg-green-500" />
+              </div>
+
+              <h2 class="mb-6 text-xl font-semibold tracking-tight">
+                {simulation}
+              </h2>
+
+              <button
+                class="w-full rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition hover:opacity-90"
+              >
+                Run Simulation
+              </button>
+
+            </div>
+          ))
+        }
+
+      </div>
+
+    </section>
+
+  </main>
+</Layout>
