@@ -1,43 +1,111 @@
-# Astro Starter Kit: Minimal
+# Vanta.io
 
-```sh
-npm create astro@latest -- --template minimal
+Developer-first payment sandbox & webhook simulation infrastructure platform.
+
+## Overview
+
+Vanta.io helps developers build, test, simulate, and debug payment integrations without relying on unreliable sandbox environments.
+
+The platform provides:
+- Payment behavior simulation
+- Webhook replay systems
+- Provider intelligence
+- Sandbox infrastructure
+- Failure injection
+- Integration observability
+
+---
+
+## Core Features
+
+### Sandbox Simulation Engine
+Simulate:
+- successful payments
+- failed payments
+- delayed settlements
+- duplicate webhooks
+- refund failures
+- retry storms
+- UPI pending states
+
+### Provider Intelligence
+Compare payment providers based on:
+- regional support
+- subscription capabilities
+- API quality
+- documentation quality
+- reliability
+
+### Webhook Infrastructure
+- event replay
+- retry simulation
+- delivery monitoring
+- payload inspection
+- signature validation testing
+
+---
+
+## Tech Stack
+
+### Frontend
+- Astro
+- Tailwind CSS
+- shadcn/ui
+- TypeScript
+
+### Backend
+- Cloudflare Workers
+- Supabase
+- PostgreSQL
+
+### Infrastructure
+- Cloudflare Pages
+- GitHub Actions
+
+---
+
+## Project Status
+
+Currently in active development.
+
+Building publicly from day zero.
+
+---
+
+## Architecture Vision
+
+```txt
+Frontend (Astro)
+      ↓
+Cloudflare Workers API Layer
+      ↓
+Simulation Engine
+      ↓
+Webhook Infrastructure
+      ↓
+Supabase PostgreSQL
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-## 🚀 Project Structure
+## Local Development
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm install
+npm run dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Goals
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Reduce payment integration complexity
+- Improve developer testing confidence
+- Simulate realistic provider behavior
+- Build developer-first payment infrastructure
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## License
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+MIT
