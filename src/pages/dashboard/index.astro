@@ -3,9 +3,6 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
 import StatCard from "@/components/dashboard/StatCard.astro";
 import ProjectCard from "@/components/dashboard/ProjectCard.astro";
-import { getDashboardProjects } from "@/lib/dashboard";
-
-const projects = await getDashboardProjects();
 ---
 
 <Layout title="Dashboard | Vanta.io">
@@ -31,51 +28,11 @@ const projects = await getDashboardProjects();
       Create Project
     </a>
   </div>
-
-  {
-  projects.length > 0 ? (
-
-    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-      {
-        projects.map((project: any) => (
-          <ProjectCard
-            name={project.name}
-            slug={project.slug}
-            workspace={project.workspaces.slug}
-          />
-        ))
-      }
-
-    </div>
-
-  ) : (
-
-    <div class="rounded-2xl border border-dashed border-border p-6">
-
-      <div class="flex h-full min-h-[220px] flex-col items-center justify-center text-center">
-
-        <p class="mb-2 text-lg font-medium">
-          Create your first real project
-        </p>
-
-        <p class="mb-6 max-w-sm text-sm text-muted-foreground">
-          Start building payment simulations, webhook workflows, and provider testing environments.
-        </p>
-
-        <a
-          href="/projects/new"
-          class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
-        >
-          New Project
-        </a>
-
-      </div>
-
-    </div>
-
-  )
-}
+<div
+  id="projects-container"
+  class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+>
+</div>
 </section>
 
   </main>
@@ -85,4 +42,80 @@ const projects = await getDashboardProjects();
   import { ensureProfile } from "@/lib/profile";
 
   await ensureProfile();
+</script>
+<script>
+  import { getDashboardProjects } from "@/lib/dashboard";
+
+  const container = document.getElementById(
+    "projects-container"
+  );
+
+  async function loadProjects() {
+    const projects =
+      await getDashboardProjects();
+
+    if (!container) return;
+
+    if (projects.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full rounded-2xl border border-dashed border-border p-6">
+          <div class="flex h-full min-h-[220px] flex-col items-center justify-center text-center">
+            <p class="mb-2 text-lg font-medium">
+              Create your first real project
+            </p>
+
+            <p class="mb-6 max-w-sm text-sm text-muted-foreground">
+              Start building payment simulations, webhook workflows, and provider testing environments.
+            </p>
+
+            <a
+              href="/projects/new"
+              class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
+            >
+              New Project
+            </a>
+          </div>
+        </div>
+      `;
+
+      return;
+    }
+
+    container.innerHTML = projects
+      .map((project: any) => {
+        return `
+          <a
+            href="/${project.workspaces.slug}/${project.slug}"
+            class="group rounded-2xl border border-border bg-card p-6 transition hover:border-muted-foreground/30"
+          >
+            <div class="mb-6 flex items-center justify-between">
+
+              <div>
+                <p class="mb-1 text-sm text-muted-foreground">
+                  ${project.workspaces.name}
+                </p>
+
+                <h2 class="text-2xl font-semibold tracking-tight">
+                  ${project.name}
+                </h2>
+              </div>
+
+              <div class="h-3 w-3 rounded-full bg-green-500"></div>
+
+            </div>
+
+            <div class="text-sm text-muted-foreground">
+              ${project.workspaces.slug}/${project.slug}
+            </div>
+
+            <div class="mt-6 text-sm font-medium transition group-hover:translate-x-1">
+              Open Project →
+            </div>
+          </a>
+        `;
+      })
+      .join("");
+  }
+
+  loadProjects();
 </script>
