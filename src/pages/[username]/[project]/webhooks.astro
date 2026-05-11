@@ -1,0 +1,23 @@
+---
+import ProjectLayout from "@/layouts/ProjectLayout.astro";
+
+const { username, project } = Astro.params;
+---
+
+<ProjectLayout
+  title="Webhooks | Vanta.io"
+  username={username!}
+  project={project!}
+>
+
+  <div class="mb-8">
+    <p class="mb-2 text-sm text-muted-foreground">
+      Event Infrastructure
+    </p>
+
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+      Webhook Events
+    </h1>
+  </div>
+
+</ProjectLayout>
