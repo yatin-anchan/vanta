@@ -1,0 +1,36 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import ProjectSidebar from "@/components/layout/ProjectSidebar.astro";
+
+interface Props {
+  title?: string;
+  username: string;
+  project: string;
+}
+
+const {
+  title = "Project",
+  username,
+  project,
+} = Astro.props;
+---
+
+<Layout title={title}>
+  <Navbar />
+
+  <main class="flex min-h-screen bg-background pt-16">
+
+    <ProjectSidebar
+      username={username}
+      project={project}
+    />
+
+    <section class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <slot />
+      </div>
+    </section>
+
+  </main>
+</Layout>
