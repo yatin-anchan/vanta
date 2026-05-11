@@ -1,0 +1,62 @@
+<div
+      Forging World
+    </h2>
+
+    <p class="max-w-md text-center text-sm text-white/60">
+      Initializing realm infrastructure, permissions, collaborative systems and workspace architecture.
+    </p>
+
+  </div>
+
+</div>
+
+<style>
+  .world-core {
+    background:
+      radial-gradient(circle at 30% 30%, #ffffff, #555555 35%, #111111 70%);
+
+    animation:
+      worldPulse 4s ease-in-out infinite,
+      worldRotate 12s linear infinite;
+
+    box-shadow:
+      0 0 80px rgba(255,255,255,0.15);
+  }
+
+  .world-ring {
+    animation:
+      worldRotateReverse 18s linear infinite;
+  }
+
+  @keyframes worldPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+
+    50% {
+      transform: scale(1.04);
+      opacity: 1;
+    }
+  }
+
+  @keyframes worldRotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes worldRotateReverse {
+    from {
+      transform: rotate(360deg);
+    }
+
+    to {
+      transform: rotate(0deg);
+    }
+  }
+</style>

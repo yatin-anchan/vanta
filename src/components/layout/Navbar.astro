@@ -1,6 +1,7 @@
 ---
 import { Menu } from "lucide-astro";
 import { LogOut } from "lucide-astro";
+import WorkspaceSwitcher from "./WorkspaceSwitcher.astro";
 
 const navItems = [
   { label: "Providers", href: "/providers" },
@@ -34,6 +35,7 @@ const navItems = [
     </nav>
 
     <div class="flex items-center gap-3">
+      <WorkspaceSwitcher />
       <button
   id="logout-button"
   class="hidden rounded-md border border-border px-4 py-2 text-sm transition hover:bg-muted sm:block"

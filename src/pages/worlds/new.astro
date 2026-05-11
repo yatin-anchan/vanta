@@ -1,0 +1,111 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
+---
+<Layout title="Create World | Vanta Labs">
+
+  <Navbar />
+
+  <WorldCreationLoader />
+
+  <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
+
+    <section class="mx-auto max-w-2xl">
+
+      <div class="mb-10">
+
+        <p class="mb-2 text-sm text-muted-foreground">
+          Collaborative Infrastructure
+        </p>
+
+        <h1 class="text-4xl font-semibold tracking-tight">
+          Create World
+        </h1>
+
+      </div>
+
+      <form
+        id="world-form"
+        class="space-y-6"
+      >
+
+        <div>
+            <label class="mb-2 block text-sm font-medium">
+            World Name
+          </label>
+
+          <input
+            id="world-name"
+            type="text"
+            placeholder="Nova Forge"
+            class="w-full rounded-2xl border border-border bg-background px-4 py-4 outline-none transition focus:border-muted-foreground"
+          />
+
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-2xl bg-white px-6 py-4 text-sm font-medium text-black transition hover:opacity-90"
+        >
+          Forge World
+        </button>
+
+      </form>
+
+    </section>
+    </main>
+
+</Layout>
+
+<script>
+  import { createWorld } from "@/lib/workspaces";
+
+  const form = document.getElementById(
+    "world-form"
+  );
+
+  const loader = document.getElementById(
+    "world-loader"
+  );
+
+  form?.addEventListener(
+    "submit",
+    async (event) => {
+      event.preventDefault();
+
+      const input = document.getElementById(
+        "world-name"
+      ) as HTMLInputElement;
+
+      const name = input.value;
+
+      if (!name) return;
+
+      loader?.classList.remove("hidden");
+
+      try {
+        await new Promise((resolve) =>
+          setTimeout(resolve, 2600)
+        );
+
+        const world = await createWorld(name);
+
+        localStorage.setItem(
+          "activeWorkspace",
+          JSON.stringify(world)
+        );
+
+        window.location.href = "/dashboard";
+      } catch (error) {
+        console.error(error);
+
+        loader?.classList.add("hidden");
+
+        alert(
+          "Failed to create world."
+        );
+      }
+    }
+  );
+</script>

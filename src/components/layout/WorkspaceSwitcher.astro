@@ -1,0 +1,247 @@
+---
+---
+
+<div class="relative">
+
+  <button
+    id="workspace-switcher"
+    class="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-2 transition hover:bg-muted"
+  >
+
+    <div
+      id="workspace-avatar"
+      class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-sm font-semibold text-black"
+    >
+      V
+    </div>
+
+    <div class="hidden text-left sm:block">
+
+      <p
+        id="workspace-type"
+        class="text-xs text-muted-foreground"
+      >
+        Workspace
+      </p>
+
+      <h2
+        id="workspace-name"
+        class="text-sm font-medium"
+      >
+        Loading...
+      </h2>
+
+    </div>
+
+  </button>
+
+  <div
+    id="workspace-dropdown"
+    class="absolute right-0 top-14 hidden w-72 rounded-2xl border border-border bg-background p-2 shadow-2xl"
+  >
+  </div>
+
+</div>
+
+<script>
+  import { getUserWorkspaces } from "@/lib/workspaces";
+
+  const switcher = document.getElementById(
+    "workspace-switcher"
+  );
+
+  const dropdown = document.getElementById(
+    "workspace-dropdown"
+  );
+
+  const workspaceName = document.getElementById(
+    "workspace-name"
+  );
+
+  const workspaceType = document.getElementById(
+    "workspace-type"
+  );
+
+  const workspaceAvatar = document.getElementById(
+    "workspace-avatar"
+  );
+
+  let dropdownOpen = false;
+
+  function setActiveWorkspace(
+  workspace: any
+) {
+  localStorage.setItem(
+    "activeWorkspace",
+    JSON.stringify(workspace)
+  );
+
+  workspaceName.textContent =
+    workspace.name;
+
+  workspaceType.textContent =
+    workspace.type === "realm"
+      ? "Realm"
+      : "World";
+
+  workspaceAvatar.textContent =
+    workspace.name
+      .charAt(0)
+      .toUpperCase();
+
+  window.dispatchEvent(
+    new CustomEvent(
+      "workspaceChanged",
+      {
+        detail: workspace,
+      }
+    )
+  );
+}
+
+  async function loadWorkspaces() {
+    const workspaces =
+      await getUserWorkspaces();
+
+    if (!workspaces.length) return;
+
+    const savedWorkspace =
+  localStorage.getItem(
+    "activeWorkspace"
+  );
+
+if (savedWorkspace) {
+  setActiveWorkspace(
+    JSON.parse(savedWorkspace)
+  );
+} else {
+  setActiveWorkspace(
+    workspaces[0].workspaces
+  );
+}
+
+    dropdown.innerHTML = workspaces
+      .map((entry: any) => {
+        const workspace = entry.workspaces;
+
+        return `
+          <button
+            class="workspace-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-muted"
+            data-slug="${workspace.slug}"
+          >
+
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-sm font-semibold text-black">
+              ${workspace.name
+                .charAt(0)
+                .toUpperCase()}
+            </div>
+
+            <div>
+              <p class="text-sm font-medium">
+                ${workspace.name}
+              </p>
+
+              <p class="text-xs text-muted-foreground">
+                ${
+                  workspace.type === "realm"
+                    ? "Realm"
+                    : "World"
+                }
+              </p>
+            </div>
+
+          </button>
+        `;
+      })
+      .join("");
+
+    dropdown.innerHTML += `
+      <div class="my-2 border-t border-border"></div>
+
+      <button
+        id="create-world-button"
+        class="flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition hover:bg-muted"
+      >
+        + Create World
+      </button>
+    `;
+
+    const createWorldButton =
+  document.getElementById(
+    "create-world-button"
+  );
+
+createWorldButton?.addEventListener(
+  "click",
+  () => {
+    window.location.href =
+      "/worlds/new";
+  }
+);
+
+    document
+  .querySelectorAll(".workspace-item")
+  .forEach((item) => {
+    item.addEventListener(
+      "click",
+      () => {
+        const slug =
+          item.getAttribute(
+            "data-slug"
+          );
+
+        const selected =
+          workspaces.find(
+            (entry: any) =>
+              entry.workspaces.slug === slug
+          );
+
+        if (!selected) return;
+
+        setActiveWorkspace(
+          selected.workspaces
+        );
+
+        dropdownOpen = false;
+
+        dropdown?.classList.add(
+          "hidden"
+        );
+      }
+    );
+  });
+  }
+
+
+  switcher?.addEventListener(
+    "click",
+    () => {
+      dropdownOpen = !dropdownOpen;
+
+      dropdown?.classList.toggle(
+        "hidden",
+        !dropdownOpen
+      );
+    }
+  );
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (
+        !switcher?.contains(
+          event.target as Node
+        ) &&
+        !dropdown?.contains(
+          event.target as Node
+        )
+      ) {
+        dropdownOpen = false;
+
+        dropdown?.classList.add("hidden");
+      }
+    }
+  );
+
+  loadWorkspaces();
+</script>
