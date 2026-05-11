@@ -32,6 +32,7 @@ if (!workspace) {
     .from("projects")
     .insert({
       workspace_id: workspace.id,
+      created_by: user.id,
       name,
       slug,
       description,
@@ -40,8 +41,9 @@ if (!workspace) {
     .single();
 
   if (error) {
-    throw error;
-  }
+  console.error("PROJECT ERROR:", error);
+  throw error;
+}
 
   return {
     project: data,

@@ -2,6 +2,10 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
 import StatCard from "@/components/dashboard/StatCard.astro";
+import ProjectCard from "@/components/dashboard/ProjectCard.astro";
+import { getDashboardProjects } from "@/lib/dashboard";
+
+const projects = await getDashboardProjects();
 ---
 
 <Layout title="Dashboard | Vanta.io">
@@ -28,28 +32,50 @@ import StatCard from "@/components/dashboard/StatCard.astro";
     </a>
   </div>
 
-  <div class="rounded-2xl border border-dashed border-border p-6">
+  {
+  projects.length > 0 ? (
 
-  <div class="flex h-full min-h-[220px] flex-col items-center justify-center text-center">
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
-    <p class="mb-2 text-lg font-medium">
-      Create your first real project
-    </p>
+      {
+        projects.map((project: any) => (
+          <ProjectCard
+            name={project.name}
+            slug={project.slug}
+            workspace={project.workspaces.slug}
+          />
+        ))
+      }
 
-    <p class="mb-6 max-w-sm text-sm text-muted-foreground">
-      Start building payment simulations, webhook workflows, and provider testing environments.
-    </p>
+    </div>
 
-    <a
-      href="/projects/new"
-      class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
-    >
-      New Project
-    </a>
+  ) : (
 
-  </div>
+    <div class="rounded-2xl border border-dashed border-border p-6">
 
-</div>
+      <div class="flex h-full min-h-[220px] flex-col items-center justify-center text-center">
+
+        <p class="mb-2 text-lg font-medium">
+          Create your first real project
+        </p>
+
+        <p class="mb-6 max-w-sm text-sm text-muted-foreground">
+          Start building payment simulations, webhook workflows, and provider testing environments.
+        </p>
+
+        <a
+          href="/projects/new"
+          class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
+        >
+          New Project
+        </a>
+
+      </div>
+
+    </div>
+
+  )
+}
 </section>
 
   </main>
