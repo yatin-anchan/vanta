@@ -1,0 +1,73 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+---
+
+<Layout title="Create Project | Vanta.io">
+  <Navbar />
+
+  <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
+
+    <section class="mx-auto max-w-2xl">
+
+      <div class="mb-10">
+        <p class="mb-2 text-sm text-muted-foreground">
+          Workspace Setup
+        </p>
+
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Create New Project
+        </h1>
+      </div>
+
+      <form class="space-y-6">
+
+        <div>
+          <label class="mb-2 block text-sm font-medium">
+            Project Name
+          </label>
+
+          <input
+            type="text"
+            placeholder="my-payment-app"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium">
+            Username / Workspace
+          </label>
+
+          <input
+            type="text"
+            placeholder="yatin"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
+          />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium">
+            Description
+          </label>
+
+          <textarea
+            rows="5"
+            placeholder="Describe your project..."
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
+        >
+          Create Project
+        </button>
+
+      </form>
+
+    </section>
+
+  </main>
+</Layout>
