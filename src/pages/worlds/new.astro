@@ -34,6 +34,25 @@ import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
             <label class="mb-2 block text-sm font-medium">
             World Name
           </label>
+          <div>
+
+  <label class="mb-2 block text-sm font-medium">
+    World Code
+  </label>
+
+  <input
+    id="world-code"
+    type="text"
+    maxlength="8"
+    placeholder="CORE"
+    class="w-full rounded-2xl border border-border bg-background px-4 py-4 uppercase outline-none transition focus:border-muted-foreground"
+  />
+
+  <p class="mt-2 text-xs text-muted-foreground">
+    3–8 letters or numbers. No spaces or symbols.
+  </p>
+
+</div>
 
           <input
             id="world-name"
@@ -43,6 +62,13 @@ import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
           />
 
         </div>
+
+        <div
+  id="world-preview"
+  class="rounded-xl border border-border bg-muted/30 px-4 py-4 text-sm text-muted-foreground"
+>
+  /dashboard/loading...
+</div>
 
         <button
           type="submit"
@@ -69,6 +95,53 @@ import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
     "world-loader"
   );
 
+  function updatePreview() {
+  const worldName =
+    input.value
+      .toLowerCase()
+      .replace(/\\s+/g, "-");
+
+  const worldCode =
+    codeInput.value.toUpperCase();
+
+  const user =
+    JSON.parse(
+      localStorage.getItem(
+        "activeWorkspace"
+      ) || "{}"
+    );
+
+  const initials =
+    user.name
+      ?.split(" ")
+      .map((part: string) =>
+        part.charAt(0).toUpperCase()
+      )
+      .join("")
+      .slice(0, 2) || "XX";
+
+  preview.textContent =
+    `/dashboard/${worldName}-${initials}-${worldCode}`;
+}
+
+input.addEventListener(
+  "input",
+  updatePreview
+);
+
+codeInput.addEventListener(
+  "input",
+  () => {
+    codeInput.value =
+      codeInput.value.replace(
+        /[^a-zA-Z0-9]/g,
+        ""
+      );
+
+    updatePreview();
+  }
+);
+
   form?.addEventListener(
     "submit",
     async (event) => {
@@ -78,7 +151,27 @@ import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
         "world-name"
       ) as HTMLInputElement;
 
+      const codeInput = document.getElementById(
+  "world-code"
+) as HTMLInputElement;
+
+const preview = document.getElementById(
+  "world-preview"
+);
+
       const name = input.value;
+      const code =
+  codeInput.value.toUpperCase();
+
+if (
+  !/^[A-Z0-9]{3,8}$/.test(code)
+) {
+  alert(
+    "World code must be 3–8 letters or numbers."
+  );
+
+  return;
+}
 
       if (!name) return;
 
@@ -89,7 +182,11 @@ import WorldCreationLoader from "@/components/worlds/WorldCreationLoader.astro";
           setTimeout(resolve, 2600)
         );
 
-        const world = await createWorld(name);
+        const world =
+  await createWorld(
+    name,
+    code
+  );
 
         localStorage.setItem(
           "activeWorkspace",

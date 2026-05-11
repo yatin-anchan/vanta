@@ -18,9 +18,10 @@ async function ensureRealm(
     .from("workspaces")
     .insert({
       owner_id: userId,
-      name: `${username}'s Realm`,
-      slug: username,
-      type: "realm",
+name: `${username}'s Realm`,
+slug: username,
+handle: username.toLowerCase(),
+type: "realm",
     })
     .select()
     .single();

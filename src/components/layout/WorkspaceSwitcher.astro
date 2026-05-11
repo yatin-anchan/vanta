@@ -127,7 +127,7 @@ if (savedWorkspace) {
         return `
           <button
             class="workspace-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-muted"
-            data-slug="${workspace.slug}"
+           data-handle="${workspace.handle}"
           >
 
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-sm font-semibold text-black">
@@ -185,22 +185,25 @@ createWorldButton?.addEventListener(
     item.addEventListener(
       "click",
       () => {
-        const slug =
-          item.getAttribute(
-            "data-slug"
-          );
+        const handle =
+  item.getAttribute(
+    "data-handle"
+  );
 
         const selected =
           workspaces.find(
             (entry: any) =>
-              entry.workspaces.slug === slug
+              entry.workspaces.handle === handle
           );
 
         if (!selected) return;
 
         setActiveWorkspace(
-          selected.workspaces
-        );
+  selected.workspaces
+);
+
+window.location.href =
+  `/dashboard/${selected.workspaces.handle}`;
 
         dropdownOpen = false;
 

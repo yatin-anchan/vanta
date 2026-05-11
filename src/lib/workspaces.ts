@@ -13,9 +13,10 @@ export async function getUserWorkspaces() {
       role,
       workspaces (
         id,
-        name,
-        slug,
-        type
+name,
+slug,
+handle,
+type
       )
     `)
     .eq("user_id", user.id);
@@ -28,9 +29,29 @@ export async function getUserWorkspaces() {
   return data;
 }
 
+function generateWorldHandle(
+  name: string,
+  fullName: string,
+  customCode: string
+) {
+  const slug = name
+    .toLowerCase()
+    .replace(/\s+/g, "-");
+
+  const initials = fullName
+    .split(" ")
+    .map((part) =>
+      part.charAt(0).toUpperCase()
+    )
+    .join("")
+    .slice(0, 2);
+
+  return `${slug}-${initials}-${customCode}`;
+}
 
 export async function createWorld(
-  name: string
+  name: string,
+  customCode: string
 ) {
   const {
     data: { user },
@@ -41,14 +62,26 @@ export async function createWorld(
   }
 
   const slug = name
-    .toLowerCase()
-    .replace(/\s+/g, "-");
+  .toLowerCase()
+  .replace(/\s+/g, "-");
+
+const fullName =
+  user.user_metadata.full_name ||
+  "Unknown User";
+
+const handle =
+  generateWorldHandle(
+    name,
+    fullName,
+    customCode
+      .toUpperCase()
+  );
 
   const { data: existing } = await supabase
-    .from("workspaces")
-    .select("id")
-    .eq("slug", slug)
-    .single();
+  .from("workspaces")
+  .select("id")
+  .eq("handle", handle)
+  .single();
 
   if (existing) {
     throw new Error(
@@ -59,11 +92,12 @@ export async function createWorld(
   const { data: world, error } = await supabase
     .from("workspaces")
     .insert({
-      owner_id: user.id,
-      name,
-      slug,
-      type: "world",
-    })
+  owner_id: user.id,
+  name,
+  slug,
+  handle,
+  type: "world",
+})
     .select()
     .single();
 

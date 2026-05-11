@@ -1,0 +1,170 @@
+---
+export const prerender = false;
+
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+---
+
+<Layout title="Workspace Dashboard | Vanta Labs">
+
+  <Navbar />
+
+  <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
+
+    <section class="mx-auto max-w-7xl">
+
+      <div class="mb-10">
+
+        <p
+          id="workspace-label"
+          class="mb-2 text-sm text-muted-foreground"
+        >
+          Workspace
+        </p>
+
+        <h1
+          id="workspace-title"
+          class="text-4xl font-semibold tracking-tight"
+        >
+          Loading...
+        </h1>
+
+      </div>
+
+      <div
+        id="projects-container"
+        class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+      >
+      </div>
+
+    </section>
+
+  </main>
+
+</Layout>
+
+<script>
+  import { getDashboardProjects } from "@/lib/dashboard";
+
+  const container = document.getElementById(
+    "projects-container"
+  );
+
+  const title = document.getElementById(
+    "workspace-title"
+  );
+
+  async function loadProjects() {
+    const pathname =
+      window.location.pathname;
+
+    const workspaceSlug =
+      pathname.split("/")[2];
+
+    const activeWorkspace =
+      JSON.parse(
+        localStorage.getItem(
+          "activeWorkspace"
+        ) || "{}"
+      );
+
+    if (
+      activeWorkspace.slug !==
+      workspaceSlug
+    ) {
+      localStorage.setItem(
+        "activeWorkspace",
+        JSON.stringify({
+          ...activeWorkspace,
+          slug: workspaceSlug,
+        })
+      );
+    }
+
+    title.textContent =
+      workspaceSlug;
+
+    const projects =
+      await getDashboardProjects();
+
+    const filteredProjects =
+      projects.filter(
+        (project: any) =>
+          project.workspaces.handle ===
+workspaceSlug
+      );
+
+    if (
+      filteredProjects.length === 0
+    ) {
+      container.innerHTML = `
+        <div class="col-span-full rounded-2xl border border-dashed border-border p-6">
+
+          <div class="flex h-full min-h-[220px] flex-col items-center justify-center text-center">
+
+            <p class="mb-2 text-lg font-medium">
+              No projects yet
+            </p>
+
+            <p class="mb-6 max-w-sm text-sm text-muted-foreground">
+              Start building inside this workspace.
+            </p>
+
+            <a
+              href="/projects/new"
+              class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
+            >
+              New Project
+            </a>
+
+          </div>
+
+        </div>
+      `;
+
+      return;
+    }
+
+    container.innerHTML =
+      filteredProjects
+        .map((project: any) => {
+          return `
+            <a
+              href="/${project.workspaces.handle}/${project.slug}
+              class="group rounded-2xl border border-border bg-card p-6 transition hover:border-muted-foreground/30"
+            >
+
+              <div class="mb-6 flex items-center justify-between">
+
+                <div>
+
+                  <p class="mb-1 text-sm text-muted-foreground">
+                    ${project.workspaces.name}
+                  </p>
+
+                  <h2 class="text-2xl font-semibold tracking-tight">
+                    ${project.name}
+                  </h2>
+
+                </div>
+
+                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+
+              </div>
+
+              <div class="text-sm text-muted-foreground">
+                ${project.workspaces.handle}/${project.slug}
+              </div>
+
+              <div class="mt-6 text-sm font-medium transition group-hover:translate-x-1">
+                Open Project →
+              </div>
+
+            </a>
+          `;
+        })
+        .join("");
+  }
+
+  loadProjects();
+</script>
