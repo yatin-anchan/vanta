@@ -1,0 +1,64 @@
+---
+interface Props {
+  username: string;
+  project: string;
+}
+
+const { username, project } = Astro.props;
+
+const links = [
+  {
+    label: "Overview",
+    href: `/${username}/${project}`,
+  },
+  {
+    label: "Sandbox",
+    href: `/${username}/${project}/sandbox`,
+  },
+  {
+    label: "Providers",
+    href: `/${username}/${project}/providers`,
+  },
+  {
+    label: "Webhooks",
+    href: `/${username}/${project}/webhooks`,
+  },
+  {
+    label: "Team",
+    href: `/${username}/${project}/team`,
+  },
+];
+---
+
+<aside class="hidden w-64 shrink-0 border-r border-border bg-background lg:block">
+
+  <div class="sticky top-16 p-6">
+
+    <div class="mb-8">
+      <p class="mb-1 text-sm text-muted-foreground">
+        Active Project
+      </p>
+
+      <h2 class="text-lg font-semibold tracking-tight">
+        {project}
+      </h2>
+    </div>
+
+    <nav class="space-y-2">
+
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="block rounded-lg px-4 py-3 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+
+    </nav>
+
+  </div>
+
+</aside>

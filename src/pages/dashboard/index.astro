@@ -2,6 +2,8 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
 import StatCard from "@/components/dashboard/StatCard.astro";
+
+
 ---
 
 <Layout title="Dashboard | Vanta.io">
@@ -10,37 +12,61 @@ import StatCard from "@/components/dashboard/StatCard.astro";
   <main class="min-h-screen bg-background px-4 pt-24 sm:px-6 lg:px-8">
     
     <section class="mx-auto max-w-7xl">
-      
-      <div class="mb-8">
-        <p class="mb-2 text-sm text-muted-foreground">
-          Overview
-        </p>
 
-        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Dashboard
-        </h1>
+  <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="mb-2 text-sm text-muted-foreground">
+        Workspace
+      </p>
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+        Your Projects
+      </h1>
+    </div>
+    <a
+      href="/projects/new"
+      class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
+    >
+      Create Project
+    </a>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <a
+      href="/yatin/vanta-demo"
+      class="group rounded-2xl border border-border bg-card p-6 transition hover:border-muted-foreground/30"
+    >
+      <div class="mb-6 flex items-center justify-between">
+        <div>
+          <p class="mb-1 text-sm text-muted-foreground">
+            Sandbox Environment
+          </p>
+          <h2 class="text-2xl font-semibold tracking-tight">
+            Vanta Demo
+          </h2>
+        </div>
+        <div class="h-3 w-3 rounded-full bg-green-500" />
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-  <StatCard
-    title="Active Projects"
-    value="0"
-  />
-
-  <StatCard
-    title="Simulated Events"
-    value="0"
-  />
-
-  <StatCard
-    title="Webhook Deliveries"
-    value="0"
-  />
-
-</div>
-
-    </section>
+      <div class="space-y-2 text-sm text-muted-foreground">
+        <div class="flex items-center justify-between">
+          <span>Providers</span>
+          <span>2</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span>Simulations</span>
+          <span>14</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span>Team Members</span>
+          <span>3</span>
+        </div>
+      </div>
+      <div class="mt-6 text-sm font-medium transition group-hover:translate-x-1">
+        Open Project →
+      </div>
+    </a>
+  </div>
+</section>
 
   </main>
 </Layout>

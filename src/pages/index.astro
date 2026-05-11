@@ -1,6 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
+import LoginButton from "@/components/shared/LoginButton.astro";
+import { supabase } from "@/lib/supabase";
+const {
+  data: { session },
+} = await supabase.auth.getSession();
 ---
 
 <Layout title="Vanta.io">
@@ -30,12 +35,18 @@ import Navbar from "@/components/layout/Navbar.astro";
       </p>
 
       <div class="flex items-center justify-center gap-4">
-        <a
-          href="/dashboard"
-          class="rounded-lg bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
-        >
-          Enter Platform
-        </a>
+        {
+  session ? (
+    <a
+      href="/dashboard"
+      class="rounded-lg bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
+    >
+      Enter Platform
+    </a>
+  ) : (
+    <LoginButton />
+  )
+}
 
         <a
           href="https://github.com"

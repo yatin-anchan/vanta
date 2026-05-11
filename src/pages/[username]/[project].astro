@@ -1,0 +1,82 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import ProjectSidebar from "@/components/layout/ProjectSidebar.astro";
+
+const { username, project } = Astro.params;
+---
+
+<Layout title="Project | Vanta.io">
+  <Navbar />
+
+  <main class="flex min-h-screen bg-background pt-16">
+
+  <ProjectSidebar
+    username={username!}
+    project={project!}
+  />
+
+  <section class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+
+    <div class="mx-auto max-w-7xl">
+
+      <div class="mb-8">
+        <p class="mb-2 text-sm text-muted-foreground">
+          Active Project
+        </p>
+
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          {username}/{project}
+        </h1>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+        <div class="rounded-2xl border border-border bg-card p-6">
+          <p class="mb-2 text-sm text-muted-foreground">
+            Simulations
+          </p>
+
+          <h2 class="text-3xl font-semibold">
+            14
+          </h2>
+        </div>
+
+        <div class="rounded-2xl border border-border bg-card p-6">
+          <p class="mb-2 text-sm text-muted-foreground">
+            Webhook Events
+          </p>
+
+          <h2 class="text-3xl font-semibold">
+            87
+          </h2>
+        </div>
+
+        <div class="rounded-2xl border border-border bg-card p-6">
+          <p class="mb-2 text-sm text-muted-foreground">
+            Providers
+          </p>
+
+          <h2 class="text-3xl font-semibold">
+            2
+          </h2>
+        </div>
+
+        <div class="rounded-2xl border border-border bg-card p-6">
+          <p class="mb-2 text-sm text-muted-foreground">
+            Team Members
+          </p>
+
+          <h2 class="text-3xl font-semibold">
+            3
+          </h2>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+</Layout>
