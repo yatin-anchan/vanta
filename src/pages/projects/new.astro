@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
+import { createProject } from "@/lib/projects";
 ---
 
 <Layout title="Create Project | Vanta.io">
@@ -20,7 +21,7 @@ import Navbar from "@/components/layout/Navbar.astro";
         </h1>
       </div>
 
-      <form class="space-y-6">
+      <form id="project-form" class="space-y-6">
 
         <div>
           <label class="mb-2 block text-sm font-medium">
@@ -28,23 +29,28 @@ import Navbar from "@/components/layout/Navbar.astro";
           </label>
 
           <input
-            type="text"
+            type="text" id="project-name"
             placeholder="my-payment-app"
             class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
           />
         </div>
 
         <div>
-          <label class="mb-2 block text-sm font-medium">
-            Username / Workspace
-          </label>
 
-          <input
-            type="text"
-            placeholder="yatin"
-            class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
-          />
-        </div>
+  <label class="mb-2 block text-sm font-medium">
+    Workspace
+  </label>
+
+  <select
+    id="workspace-type"
+    class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
+  >
+    {
+  <option disabled selected>
+  Loading workspaces...
+</option>
+  </select>
+</div>
 
         <div>
           <label class="mb-2 block text-sm font-medium">
@@ -52,7 +58,7 @@ import Navbar from "@/components/layout/Navbar.astro";
           </label>
 
           <textarea
-            rows="5"
+            rows="5" id="project-description"
             placeholder="Describe your project..."
             class="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-muted-foreground"
           />
@@ -71,3 +77,96 @@ import Navbar from "@/components/layout/Navbar.astro";
 
   </main>
 </Layout>
+
+<script>
+  import { createProject } from "@/lib/projects";
+
+  const form = document.getElementById("project-form");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nameInput = document.getElementById(
+      "project-name"
+    ) as HTMLInputElement;
+
+    const descriptionInput = document.getElementById(
+      "project-description"
+    ) as HTMLTextAreaElement;
+
+    const workspaceSelect = document.getElementById(
+  "workspace-type"
+) as HTMLSelectElement;
+
+    const name = nameInput.value;
+    const description = descriptionInput.value;
+    const workspaceSlug = workspaceSelect.value;
+
+    if (!name) return;
+
+    try {
+      const result = await createProject(
+  name,
+  description,
+  workspaceSlug
+);
+
+      window.location.href =
+  `/${result.workspaceSlug}/${result.project.slug}`;
+    } catch (error) {
+      console.error(error);
+      alert("Failed to create project.");
+    }
+  });
+</script>
+<script>
+  import { getUserWorkspaces } from "@/lib/workspaces";
+
+  const workspaceSelect = document.getElementById(
+    "workspace-type"
+  ) as HTMLSelectElement;
+
+  async function loadWorkspaces() {
+    const workspaces = await getUserWorkspaces();
+
+    workspaceSelect.innerHTML = "";
+
+    workspaces.forEach((entry: any) => {
+      const workspace = entry.workspaces;
+
+      const option = document.createElement("option");
+
+      option.value = workspace.slug;
+      option.textContent = workspace.name;
+
+      workspaceSelect.appendChild(option);
+    });
+
+    const divider = document.createElement("option");
+    divider.disabled = true;
+    divider.textContent = "──────────";
+
+    workspaceSelect.appendChild(divider);
+
+    const createOption = document.createElement("option");
+    createOption.value = "__create_world";
+    createOption.textContent = "+ Create World";
+
+    workspaceSelect.appendChild(createOption);
+  }
+
+  loadWorkspaces();
+
+  workspaceSelect?.addEventListener(
+    "change",
+    () => {
+      if (
+        workspaceSelect.value === "__create_world"
+      ) {
+        alert(
+          "World creation flow coming next."
+        );
+      }
+    }
+  );
+</script>

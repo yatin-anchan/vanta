@@ -2,8 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/layout/Navbar.astro";
 import StatCard from "@/components/dashboard/StatCard.astro";
-
-
 ---
 
 <Layout title="Dashboard | Vanta.io">
@@ -56,3 +54,9 @@ import StatCard from "@/components/dashboard/StatCard.astro";
 
   </main>
 </Layout>
+
+<script>
+  import { ensureProfile } from "@/lib/profile";
+
+  await ensureProfile();
+</script>

@@ -1,11 +1,15 @@
 import { supabase } from "./supabase";
+import { ensureProfile } from "./profile";
 
 export async function signInWithGitHub() {
-  await supabase.auth.signInWithOAuth({
+  const { data } = await supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: `${window.location.origin}/dashboard`,
-    },
+  redirectTo: `${window.location.origin}/dashboard`,
+  queryParams: {
+    prompt: "consent",
+  },
+},
   });
 }
 

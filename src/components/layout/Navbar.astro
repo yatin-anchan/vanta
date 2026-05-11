@@ -1,5 +1,6 @@
 ---
 import { Menu } from "lucide-astro";
+import { LogOut } from "lucide-astro";
 
 const navItems = [
   { label: "Providers", href: "/providers" },
@@ -33,7 +34,12 @@ const navItems = [
     </nav>
 
     <div class="flex items-center gap-3">
-
+      <button
+  id="logout-button"
+  class="hidden rounded-md border border-border px-4 py-2 text-sm transition hover:bg-muted sm:block"
+>
+  Logout
+</button>
       <a
         href="https://github.com"
         target="_blank"
@@ -53,3 +59,19 @@ const navItems = [
   </div>
 
 </header>
+
+<script>
+  import { signOut } from "@/lib/auth";
+
+  const logoutButton =
+    document.getElementById("logout-button");
+
+  logoutButton?.addEventListener(
+    "click",
+    async () => {
+      await signOut();
+
+      window.location.href = "/";
+    }
+  );
+</script>
